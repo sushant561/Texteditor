@@ -71,7 +71,8 @@ tool_bar.pack(side = tk.TOP, fill = tk.X)
 #font family box
 font_tuple = tk.font.families()
 font_family = tk.StringVar()
-font_box = ttk.Combobox(tool_bar, width = 30, values = font_tuple, textvariable = font_family, state = "readonly")
+font_box = ttk.Combobox(tool_bar, width = 30, textvariable = font_family, state = "readonly")
+font_box['values'] = font_tuple
 font_box.current(font_tuple.index('Arial'))
 font_box.grid(row = 0, column = 0, sticky = tk.W, padx = 5)
 
@@ -128,6 +129,20 @@ scroll_bar.pack(side = tk.RIGHT, fill = tk.Y)
 text_editor.pack(fill = tk.BOTH, expand = True)
 scroll_bar.config(command = text_editor.yview)
 text_editor.config(yscrollcommand = scroll_bar.set)
+
+#text font family & font size functionality
+current_font_family = "Arial"
+current_font_size = 12
+
+def change_font(main_application):
+    global current_font_family, current_font_size
+    current_font_family = font_family.get()
+    current_font_size = size_bar.get()
+    text_editor.configure(font = (current_font_family, current_font_size))
+
+font_box.bind('<<ComboboxSelected>>', change_font)
+font_size.bind('<<ComboboxSelected>>', change_font)
+text_editor.configure(font = ("Arial", 12))
 
 
 # ----------------------- text editor coding End -----------------------
