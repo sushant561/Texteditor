@@ -4,7 +4,7 @@ from tkinter import font, colorchooser, filedialog, messagebox
 import os
 
 main_application = tk.Tk()
-main_application.geometry('1200x800')
+main_application.geometry('1200x600')
 main_application.title('Text Editor')
 
 # ----------------------- Main Menu -----------------------
@@ -132,8 +132,11 @@ text_editor.config(yscrollcommand = scroll_bar.set)
 
 # ----------------------- text editor coding End -----------------------
 
-# ----------------------- main statusbar coding -----------------------
-# ----------------------- main statusbar conding End -----------------------
+# ----------------------- statusbar coding -----------------------
+status_bar = ttk.Label(main_application, text = 'Status Bar')
+status_bar.pack(side = tk.BOTTOM)
+
+# ----------------------- statusbar conding End -----------------------
 
 # ----------------------- Main Menu functionality -----------------------
 #file commands
