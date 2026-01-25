@@ -60,11 +60,62 @@ color_dict = {
 main_menu.add_cascade(label = "File", menu = file)
 main_menu.add_cascade(label = "Edit", menu = edit)
 main_menu.add_cascade(label = "View", menu = view)
-main_menu.add_cascade(label = "Color", menu = color_theme)
+main_menu.add_cascade(label = "Color Themes", menu = color_theme)
 
 # ----------------------- Main Menu End -----------------------
 
 # ----------------------- Toolbar -----------------------
+tool_bar = ttk.Label(main_application)
+tool_bar.pack(side = tk.TOP, fill = tk.X)
+
+#font family box
+font_tuple = tk.font.families()
+font_family = tk.StringVar()
+font_box = ttk.Combobox(tool_bar, width = 30, values = font_tuple, textvariable = font_family, state = "readonly")
+font_box.current(font_tuple.index('Arial'))
+font_box.grid(row = 0, column = 0, sticky = tk.W, padx = 5)
+
+#font size box
+size_bar = tk.IntVar()
+font_size = ttk.Combobox(tool_bar, width = 14, values = tuple(range(8,60)), state = 'readonly', textvariable = size_bar)
+font_size.current(4)
+font_size.grid(row = 0, column = 1, padx = 5)
+
+# bold btn
+bold_icon = tk.PhotoImage(file = 'icons2/bold.png')
+bold_btn = ttk.Button(tool_bar, image = bold_icon)
+bold_btn.grid(row = 0, column = 2, padx = 5)
+
+# italic btn
+italic_icon = tk.PhotoImage(file = 'icons2/italic.png')
+italic_btn = ttk.Button(tool_bar, image = italic_icon)
+italic_btn.grid(row = 0, column = 3, padx = 5)
+
+#underline btn
+underline_icon = tk.PhotoImage(file = 'icons2/underline.png')
+underline_btn = ttk.Button(tool_bar, image = underline_icon)
+underline_btn.grid(row = 0, column = 4, padx = 5)
+
+#font color btn
+font_color_icon = tk.PhotoImage(file = 'icons2/font_color.png')
+font_color_btn = ttk.Button(tool_bar, image = font_color_icon)
+font_color_btn.grid(row = 0, column = 5, padx = 5)
+
+#align left btn
+align_left_icon = tk.PhotoImage(file = "icons2/align_left.png")
+align_left_btn = ttk.Button(tool_bar, image = align_left_icon)
+align_left_btn.grid(row = 0, column = 6, padx = 5)
+
+#align center btn
+align_center_icon = tk.PhotoImage(file = "icons2/align_center.png")
+align_center_btn = ttk.Button(tool_bar, image = align_center_icon)
+align_center_btn.grid(row = 0, column = 7, padx = 5)
+
+#align right btn
+align_right_icon = tk.PhotoImage(file = "icons2/align_right.png")
+align_right_btn = ttk.Button(tool_bar, image= align_right_icon)
+align_right_btn.grid(row = 0, column = 8)
+
 # ----------------------- Toolbar End -----------------------
 
 # ----------------------- text editor coding -----------------------
