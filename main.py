@@ -133,18 +133,16 @@ text_editor.config(yscrollcommand = scroll_bar.set)
 #text font family & font size functionality
 current_font_family = "Arial"
 current_font_size = 12
-current_font_weight = 'normal'
-current_font_slant = 'roman'
 
 def change_font(main_application):
     global current_font_family
     current_font_family = font_family.get()
-    text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+    text_editor.configure(font = (current_font_family, current_font_size))
 
 def change_font_size(main_application):
     global current_font_size
     current_font_size = size_var.get()
-    text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+    text_editor.configure(font = (current_font_family, current_font_size))
 
 font_box.bind('<<ComboboxSelected>>', change_font)
 font_size.bind('<<ComboboxSelected>>', change_font_size)
@@ -153,29 +151,40 @@ font_size.bind('<<ComboboxSelected>>', change_font_size)
 # {'family': 'Courier New', 'size': 10, 'weight': 'normal', 'slant': 'roman', 'underline': 0, 'overstrike': 0}
 #bold functionality
 def change_bold():
-    global current_font_weight
     text_property = tk.font.Font(font = text_editor['font'])
     if text_property.actual()['weight'] == 'normal':
-        current_font_weight = 'bold'
-        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+        text_editor.configure(font = (current_font_family, current_font_size, 'bold'))
     if text_property.actual()['weight'] == 'bold':
-        current_font_weight = 'normal'
-        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+        text_editor.configure(font = (current_font_family, current_font_size, 'normal'))
 
 bold_btn.configure(command = change_bold)
 
 #italic functionality
 def change_italic():
-    global current_font_slant
     text_property = tk.font.Font(font = text_editor['font'])
     if text_property.actual()['slant'] == 'roman':
-        current_font_slant = 'italic'
-        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight , current_font_slant))
+        text_editor.configure(font = (current_font_family, current_font_size, 'italic'))
     if text_property.actual()['slant'] == 'italic':
-        current_font_slant = 'roman'
-        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+        text_editor.configure(font = (current_font_family, current_font_size, 'roman'))
 
 italic_btn.configure(command = change_italic)
+
+#underline functionality
+def change_underline():
+    text_property = tk.font.Font(font = text_editor['font'])
+    if text_property.actual()['underline'] == 0:
+        text_editor.configure(font = (current_font_family, current_font_size, 'underline'))
+    if text_property.actual()['underline'] == 1:
+        text_editor.configure(font = (current_font_family, current_font_size, 'normal'))
+
+underline_btn.configure(command = change_underline)
+
+# font color functionality
+def change_font_color():
+    color_var = tk.colorchooser.askcolor()
+    text_editor.configure(foreground = color_var[1])
+
+font_color_btn.configure(command = change_font_color)
 
 
 text_editor.configure(font = ("Arial", 12))
