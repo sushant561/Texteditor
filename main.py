@@ -66,7 +66,7 @@ main_menu.add_cascade(label = "Color Themes", menu = color_theme)
 
 # ----------------------- Toolbar -----------------------
 tool_bar = ttk.Label(main_application)
-tool_bar.pack(side = tk.TOP, fill = tk.X)
+tool_bar.pack(side = tk.TOP, fill = tk.X, padx = 1, pady = 2)
 
 #font family box
 font_tuple = tk.font.families()
@@ -77,8 +77,8 @@ font_box.current(font_tuple.index('Arial'))
 font_box.grid(row = 0, column = 0, sticky = tk.W, padx = 5)
 
 #font size box
-size_bar = tk.IntVar()
-font_size = ttk.Combobox(tool_bar, width = 14, values = tuple(range(8,60)), state = 'readonly', textvariable = size_bar)
+size_var = tk.IntVar()
+font_size = ttk.Combobox(tool_bar, width = 14, values = tuple(range(8,60)), state = 'readonly', textvariable = size_var)
 font_size.current(4)
 font_size.grid(row = 0, column = 1, padx = 5)
 
@@ -133,15 +133,51 @@ text_editor.config(yscrollcommand = scroll_bar.set)
 #text font family & font size functionality
 current_font_family = "Arial"
 current_font_size = 12
+current_font_weight = 'normal'
+current_font_slant = 'roman'
 
 def change_font(main_application):
-    global current_font_family, current_font_size
+    global current_font_family
     current_font_family = font_family.get()
-    current_font_size = size_bar.get()
-    text_editor.configure(font = (current_font_family, current_font_size))
+    text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+
+def change_font_size(main_application):
+    global current_font_size
+    current_font_size = size_var.get()
+    text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
 
 font_box.bind('<<ComboboxSelected>>', change_font)
-font_size.bind('<<ComboboxSelected>>', change_font)
+font_size.bind('<<ComboboxSelected>>', change_font_size)
+
+# Tools Buttons functionality
+# {'family': 'Courier New', 'size': 10, 'weight': 'normal', 'slant': 'roman', 'underline': 0, 'overstrike': 0}
+#bold functionality
+def change_bold():
+    global current_font_weight
+    text_property = tk.font.Font(font = text_editor['font'])
+    if text_property.actual()['weight'] == 'normal':
+        current_font_weight = 'bold'
+        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+    if text_property.actual()['weight'] == 'bold':
+        current_font_weight = 'normal'
+        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+
+bold_btn.configure(command = change_bold)
+
+#italic functionality
+def change_italic():
+    global current_font_slant
+    text_property = tk.font.Font(font = text_editor['font'])
+    if text_property.actual()['slant'] == 'roman':
+        current_font_slant = 'italic'
+        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight , current_font_slant))
+    if text_property.actual()['slant'] == 'italic':
+        current_font_slant = 'roman'
+        text_editor.configure(font = (current_font_family, current_font_size, current_font_weight, current_font_slant))
+
+italic_btn.configure(command = change_italic)
+
+
 text_editor.configure(font = ("Arial", 12))
 
 
