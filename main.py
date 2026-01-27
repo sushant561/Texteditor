@@ -262,24 +262,28 @@ def open_file(enent = None):
     main_application.title(os.path.basename(url))
 
 # save functionality
-def save(event = None):
+def save_file(event = None):
     global url
-    if text_editor.edit_modified:
+    try:
         if url:
-            with open(url, 'w') as fr:
-                text_content_modified = text_editor.get(1.0, 'end-1c')
-                text_editor.delete(1.0, tk.END)
-                text_editor.insert(1.0, text_content_modified)
-                fr.write(text_content_modified)
+            content = str(text_editor.get(1.0, tk.END))
+            with open(url, 'w', encoding = 'utf-8') as fw:
+                fw.write(content)
         else:
-            print("First Save the file localy")
+            url = filedialog.asksaveasfile(mode = 'w', defaultextension = '.txt', filetypes = (('Text File', '*.txt'),("All File", '*.*')))
+            content2 = text_editor.get(1.0, tk.END)
+            url.write(content2)
+            url.close()
+    except:
+        return
+
         
 
 
 #file commands
 file.add_command(label = "New", image = new_icon, compound = tk.LEFT, accelerator = "Ctrl+N", command = new_file)
 file.add_command(label = "Open", image = open_icon, compound = tk.LEFT, accelerator = "Ctrl+O", command = open_file)
-file.add_command(label = "Save", image = save_icon, compound = tk.LEFT, accelerator = "Ctrl+S", command = save)
+file.add_command(label = "Save", image = save_icon, compound = tk.LEFT, accelerator = "Ctrl+S", command = save_file)
 file.add_command(label = "Save As", image = save_as_icon, compound = tk.LEFT, accelerator = 'Ctrl+Alt+S')
 file.add_command(label = "Exit", image = exit_icon, compound = tk.LEFT, accelerator = "Ctrl+Q")
 
