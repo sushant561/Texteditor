@@ -238,10 +238,48 @@ text_editor.bind('<<Modified>>', changed)
 # ----------------------- statusbar conding End -----------------------
 
 # ----------------------- Main Menu functionality -----------------------
+# variable
+url = ''
+
+# new functionality
+def new_file(event = None):
+    global url
+    url = ''
+    text_editor.delete(1.0, tk.END)
+
+#open functionality
+def open_file(enent = None):
+    global url
+    url = filedialog.askopenfilename(initialdir = os.getcwd(), title = 'Select File', filetypes = (('Text File', '*.txt'),("All File", '*.*')))
+    try:
+        with open(url, 'r') as fr:
+            text_editor.delete(1.0, tk.END)
+            text_editor.insert(1.0, fr.read())
+    except FileNotFoundError:
+        messagebox.showerror('Error', "File not found !!")
+    except:
+        return
+    main_application.title(os.path.basename(url))
+
+# save functionality
+def save(event = None):
+    global url
+    if text_editor.edit_modified:
+        if url:
+            with open(url, 'w') as fr:
+                text_content_modified = text_editor.get(1.0, 'end-1c')
+                text_editor.delete(1.0, tk.END)
+                text_editor.insert(1.0, text_content_modified)
+                fr.write(text_content_modified)
+        else:
+            print("First Save the file localy")
+        
+
+
 #file commands
-file.add_command(label = "New", image = new_icon, compound = tk.LEFT, accelerator = "Ctrl+N")
-file.add_command(label = "Open", image = open_icon, compound = tk.LEFT, accelerator = "Ctrl+O")
-file.add_command(label = "Save", image = save_icon, compound = tk.LEFT, accelerator = "Ctrl+S")
+file.add_command(label = "New", image = new_icon, compound = tk.LEFT, accelerator = "Ctrl+N", command = new_file)
+file.add_command(label = "Open", image = open_icon, compound = tk.LEFT, accelerator = "Ctrl+O", command = open_file)
+file.add_command(label = "Save", image = save_icon, compound = tk.LEFT, accelerator = "Ctrl+S", command = save)
 file.add_command(label = "Save As", image = save_as_icon, compound = tk.LEFT, accelerator = 'Ctrl+Alt+S')
 file.add_command(label = "Exit", image = exit_icon, compound = tk.LEFT, accelerator = "Ctrl+Q")
 
