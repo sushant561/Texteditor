@@ -323,18 +323,21 @@ def exit_command():
 def copy_func(enven = None):
     content = text_editor.get(1.0, 'end-1c')
     pyperclip.copy(content)
+    # text_editor.event_generate('<Control c>') ## <-- this single line can do all work with lambda function but i used pyperclip module
 
 #paste functionality
 def paste_func(enven = None):
     content_length = float(len(text_editor.get(1.0, 'end-1c')))
     paste_content = pyperclip.paste()
     text_editor.insert(content_length, paste_content)
+    # text_editor.event_generate('<Control v>') ## <-- this single line can do all work with lambda function but i used pyperclip module
 
 # cut functionality
 def cut_func(event = None):
     content = text_editor.get(1.0, 'end-1c')
-    pyperclip.copy(content) 
+    pyperclip.copy(content)
     text_editor.delete(1.0, tk.END)
+    # text_editor.event_generate('<Control x>') ## <-- this single line can do all work with lambda function but i used pyperclip module
 
 #clear all functionality
 def clear_all(event = None):
