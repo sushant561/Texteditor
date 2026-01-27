@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import font, colorchooser, filedialog, messagebox
 import os
+import pyperclip
 
 main_application = tk.Tk()
 main_application.geometry('1200x600')
@@ -241,7 +242,7 @@ text_editor.bind('<<Modified>>', changed)
 # ----------------------- Main Menu functionality -----------------------
 # variable
 url = ''
-
+# _________________new tool functionalies
 # new functionality
 def new_file(event = None):
     global url
@@ -257,7 +258,8 @@ def open_file(enent = None):
             text_editor.delete(1.0, tk.END)
             text_editor.insert(1.0, fr.read())
     except FileNotFoundError:
-        messagebox.showerror('Error', "File not found !!")
+        # messagebox.showerror('Error', "File not found !!")
+        return
     except:
         return
     main_application.title(os.path.basename(url))
@@ -315,7 +317,28 @@ def exit_command():
     except:
         return
 
+# _____________ edit tool functionalities
 
+# copy functionality
+def copy_func(enven = None):
+    content = text_editor.get(1.0, 'end-1c')
+    pyperclip.copy(content)
+
+#paste functionality
+def paste_func(enven = None):
+    content_length = float(len(text_editor.get(1.0, 'end-1c')))
+    paste_content = pyperclip.paste()
+    text_editor.insert(content_length, paste_content)
+
+# cut functionality
+def cut_func(event = None):
+    content = text_editor.get(1.0, 'end-1c')
+    pyperclip.copy(content) 
+    text_editor.delete(1.0, tk.END)
+
+#clear all functionality
+def clear_all(event = None):
+    text_editor.delete(1.0, tk.END)
 
 
 #file commands
@@ -326,10 +349,10 @@ file.add_command(label = "Save As", image = save_as_icon, compound = tk.LEFT, ac
 file.add_command(label = "Exit", image = exit_icon, compound = tk.LEFT, accelerator = "Ctrl+Q", command = exit_command)
 
 #edit commands
-edit.add_command(label = "Copy", image = copy_icon, compound = tk.LEFT, accelerator = "Ctrl+C")
-edit.add_command(label = "Paste", image = paste_icon, compound = tk.LEFT, accelerator = "Ctrl+Y")
-edit.add_command(label = "Cut", image = cut_icon, compound = tk.LEFT, accelerator = 'Ctrl+X')
-edit.add_command(label = "Clear All", image = clear_all_icon, compound = tk.LEFT, accelerator = "Ctrl+Alt+X")
+edit.add_command(label = "Copy", image = copy_icon, compound = tk.LEFT, accelerator = "Ctrl+C", command = copy_func)
+edit.add_command(label = "Paste", image = paste_icon, compound = tk.LEFT, accelerator = "Ctrl+Y", command = paste_func)
+edit.add_command(label = "Cut", image = cut_icon, compound = tk.LEFT, accelerator = 'Ctrl+X', command = cut_func)
+edit.add_command(label = "Clear All", image = clear_all_icon, compound = tk.LEFT, accelerator = "Ctrl+Alt+X", command = clear_all)
 edit.add_command(label = "Find", image = find_icon, compound = tk.LEFT, accelerator = "Ctrl+F")
 
 #views commands
