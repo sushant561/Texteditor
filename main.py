@@ -376,12 +376,13 @@ def find_func(event = None):
     find_dialogue.geometry('450x250+500+200')
     find_dialogue.title('Find')
     find_dialogue.resizable(0,0)
+     
 
     #frame
     find_frame = ttk.Labelframe(find_dialogue, text = 'Find/Replace')
     find_frame.pack(pady = 20)
 
-    #labels
+    #labelsp
     text_find_label = ttk.Label(find_frame, text = "Find : ")
     text_replace_label = ttk.Label(find_frame, text = 'Replace : ')
 
@@ -407,6 +408,34 @@ def find_func(event = None):
 
     find_dialogue.mainloop()
 
+# _____________ view functionalities
+
+show_toolbar = tk.BooleanVar()
+show_toolbar.set(True)
+show_statusbar = tk.BooleanVar()
+show_statusbar.set(True)
+
+def hide_toolbar():
+    global show_toolbar
+    if show_toolbar:
+        tool_bar.pack_forget()
+        show_toolbar = False
+    else:
+        text_editor.pack_forget()
+        status_bar.pack_forget()
+        tool_bar.pack(side = tk.TOP, fill = tk.X)
+        text_editor.pack(fill = tk.BOTH, expand = True)
+        status_bar.pack(side = tk.Bottom)
+        show_toolbar = True
+
+def hide_statusbar():
+    global show_statusbar
+    if show_statusbar:
+        status_bar.pack_forget()
+        show_statusbar = False
+    else:
+        status_bar.pack(side = tk.BOTTOM)
+        show_statusbar = True
 
 #file commands
 file.add_command(label = "New", image = new_icon, compound = tk.LEFT, accelerator = "Ctrl+N", command = new_file)
@@ -423,8 +452,8 @@ edit.add_command(label = "Clear All", image = clear_all_icon, compound = tk.LEFT
 edit.add_command(label = "Find", image = find_icon, compound = tk.LEFT, accelerator = "Ctrl+F", command = find_func)
 
 #views commands
-view.add_checkbutton(label = "Tool Bar", image = tool_bar_icon, compound = tk.LEFT)
-view.add_checkbutton(label = "Status Bar", image = status_bar_icon, compound = tk.LEFT)
+view.add_checkbutton(label = "Tool Bar", onvalue = True, offvalue = False, variable = show_toolbar, image = tool_bar_icon, compound = tk.LEFT, command  = hide_toolbar)
+view.add_checkbutton(label = "Status Bar", onvalue = True, offvalue = False, variable = show_statusbar, image = status_bar_icon, compound = tk.LEFT, command = hide_statusbar)
 
 #color theme commands
 count = 0
