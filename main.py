@@ -227,13 +227,12 @@ status_bar.pack(side = tk.BOTTOM)
 text_changed = False
 def changed(event = None):
     global text_changed
-    if text_editor.edit_modified:
+    if text_editor.edit_modified():
         text_changed = True
         words = len(text_editor.get(1.0, 'end-1c').split())
         characters = len(text_editor.get(1.0, 'end-1c'))
         status_bar.config(text = f"Words : {words} Characters : {characters}")
-    else:
-        text_editor.edit_modified(False)
+    text_editor.edit_modified(False)
 
 text_editor.bind('<<Modified>>', changed)
 
@@ -293,7 +292,7 @@ def save_as(event = None):
     
 
 # exit functionality
-def exit_command():
+def exit_command(event = None):
     global url, text_changed
     try:
         if text_changed:
@@ -437,6 +436,13 @@ def hide_statusbar():
         status_bar.pack(side = tk.BOTTOM)
         show_statusbar = True
 
+# _____________ color theme functionalities
+def change_theme():
+    chosen_theme = theme_choice.get()
+    color_tuple = color_dict.get(chosen_theme)
+    fg_color, bg_color = color_tuple[0], color_tuple[1]
+    text_editor.config(background=bg_color, fg=fg_color) 
+
 #file commands
 file.add_command(label = "New", image = new_icon, compound = tk.LEFT, accelerator = "Ctrl+N", command = new_file)
 file.add_command(label = "Open", image = open_icon, compound = tk.LEFT, accelerator = "Ctrl+O", command = open_file)
@@ -458,13 +464,21 @@ view.add_checkbutton(label = "Status Bar", onvalue = True, offvalue = False, var
 #color theme commands
 count = 0
 for i in color_dict:
-    color_theme.add_radiobutton(label = i, image = color_icons[count], compound=tk.LEFT, variable = theme_choice)
+    color_theme.add_radiobutton(label = i, image = color_icons[count], compound=tk.LEFT, variable = theme_choice, command = change_theme)
     count += 1
 
 
 # ----------------------- Main Menu functionality End -----------------------
 
 
-
 main_application.config(menu = main_menu)
+
+#bind shortcut key
+main_application.bind('<Control-n>', new_file)
+main_application.bind('<Control-o>', open_file)
+main_application.bind('<Control-s>', save_file)
+main_application.bind('<Control-Alt-s>', save_as)
+main_application.bind('<Control-q>', exit_command)
+main_application.bind('<Control-f>', find_func)
+
 main_application.mainloop()
